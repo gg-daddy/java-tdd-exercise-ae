@@ -1,4 +1,4 @@
-package com.odde.tdd;
+package com.odde.tdd.budget;
 
 import java.util.List;
 
