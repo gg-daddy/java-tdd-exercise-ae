@@ -29,7 +29,9 @@ public class Budget {
     return begin.until(end, ChronoUnit.DAYS) + 1;
   }
 
-  public long getCountedAmount(LocalDate begin, LocalDate end) {
+  public long getCountedAmount(Period period) {
+    LocalDate begin = period.getBegin();
+    LocalDate end = period.getEnd();
     if (month.isBefore(YearMonth.from(begin)) || month.isAfter(YearMonth.from(end))) {
       return 0L;
     } else if (belongToCurrentBudget(begin) && belongToCurrentBudget(end)) {

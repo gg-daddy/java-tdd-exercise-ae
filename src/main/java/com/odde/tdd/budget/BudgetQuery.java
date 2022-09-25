@@ -18,8 +18,6 @@ public class BudgetQuery {
     if (CollectionUtils.isEmpty(allBudgets)) {
       return NO_BUDGET_RESULT;
     }
-    return allBudgets.stream()
-        .mapToLong(budget -> budget.getCountedAmount(period.getBegin(), period.getEnd()))
-        .sum();
+    return allBudgets.stream().mapToLong(budget -> budget.getCountedAmount(period)).sum();
   }
 }
