@@ -85,7 +85,7 @@ public class BudgetTest {
     long result = getTotalBudget(beginDate, endDate, budgets);
 
     // Assert
-    Assertions.assertEquals(1000 / 30 * (24 - 7 + 1), result);
+    Assertions.assertEquals((long) (((double) 1000 / 30) * (24 - 7 + 1)), result);
   }
 
   @Test
@@ -144,7 +144,7 @@ public class BudgetTest {
     long result = getTotalBudget(beginDate, endDate, budgets);
 
     // Assert
-    Assertions.assertEquals(621 / 30 * (30 - 7 + 1) + 491 + 821, result);
+    Assertions.assertEquals((long) (((double) 621 / 30) * (30 - 7 + 1)) + 491 + 821, result);
   }
 
   private long getTotalBudget(LocalDate begin, LocalDate end, List<Budget> budgets) {
