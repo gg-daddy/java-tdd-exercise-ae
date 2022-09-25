@@ -2,6 +2,7 @@ package com.odde.tdd.budget;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 
 public class Budget {
   private final YearMonth month;
@@ -20,12 +21,20 @@ public class Budget {
     return amount;
   }
 
-  public long getPartialAmount(long days) {
+  private long getPartialAmount(long days) {
     return Double.valueOf(getPerDayAmount() * days).longValue();
   }
 
+  private long countedDaysForBudget(LocalDate begin, LocalDate end) {
+    return begin.until(end, ChronoUnit.DAYS) + 1;
+  }
+
   public long getCountedAmount(LocalDate begin, LocalDate end) {
-    if (belongToCurrentBudget(begin)) {
+    if (month.isBefore(YearMonth.from(begin)) || month.isAfter(YearMonth.from(end))) {
+      return 0L;
+    } else if (belongToCurrentBudget(begin) && belongToCurrentBudget(end)) {
+      return getPartialAmount(countedDaysForBudget(begin, end));
+    } else if (belongToCurrentBudget(begin)) {
       int countedDays = begin.lengthOfMonth() - begin.getDayOfMonth() + 1;
       return getPartialAmount(countedDays);
     } else if (belongToCurrentBudget(end)) {
