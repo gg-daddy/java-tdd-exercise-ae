@@ -42,8 +42,7 @@ public class BudgetQuery {
     } else {
       long result = 0L;
       for (Budget current : allBudgets) {
-        if (current.getMonth().isBefore(beginYearMonth)
-            || current.getMonth().isAfter(endYearMonth)) {
+        if (isValidBudgetForPeriod(current, beginYearMonth, endYearMonth)) {
           continue;
         } else if (current.isWantedBudget(beginYearMonth)) {
           int countedDays = beginYearMonth.lengthOfMonth() - begin.getDayOfMonth() + 1;
@@ -57,6 +56,13 @@ public class BudgetQuery {
       }
       return result;
     }
+  }
+
+  private boolean isValidBudgetForPeriod(
+      Budget budget, YearMonth beginYearMonth, YearMonth endYearMonth) {
+    return budget == null
+        || budget.getMonth().isBefore(beginYearMonth)
+        || budget.getMonth().isAfter(endYearMonth);
   }
 
   private long countedDaysForBudget(LocalDate begin, LocalDate end) {
