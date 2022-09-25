@@ -27,7 +27,7 @@ public class Budget {
     return (double) amount / month.lengthOfMonth();
   }
 
-  public boolean matchYearMonth(YearMonth wanted) {
+  public boolean isWantedBudget(YearMonth wanted) {
     return wanted.equals(month);
   }
 }

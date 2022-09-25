@@ -33,7 +33,7 @@ public class BudgetQuery {
     YearMonth beginYearMonth = YearMonth.from(begin);
     YearMonth endYearMonth = YearMonth.from(end);
     if (beginYearMonth.equals(endYearMonth)) {
-      Budget matchedBudget = getMatchedBudget(beginYearMonth, allBudgets);
+      Budget matchedBudget = getWantedBudget(beginYearMonth, allBudgets);
       if (matchedBudget != null) {
         return matchedBudget.getPartialAmount(daysBetween(begin, end));
       } else {
@@ -45,10 +45,10 @@ public class BudgetQuery {
         if (current.getMonth().isBefore(beginYearMonth)
             || current.getMonth().isAfter(endYearMonth)) {
           continue;
-        } else if (current.matchYearMonth(beginYearMonth)) {
+        } else if (current.isWantedBudget(beginYearMonth)) {
           int countedDays = beginYearMonth.lengthOfMonth() - begin.getDayOfMonth() + 1;
           result += current.getPartialAmount(countedDays);
-        } else if (current.matchYearMonth(endYearMonth)) {
+        } else if (current.isWantedBudget(endYearMonth)) {
           int countedDays = end.getDayOfMonth();
           result += current.getPartialAmount(countedDays);
         } else {
@@ -63,10 +63,10 @@ public class BudgetQuery {
     return begin.until(end, ChronoUnit.DAYS) + 1;
   }
 
-  private Budget getMatchedBudget(YearMonth watched, List<Budget> budgets) {
+  private Budget getWantedBudget(YearMonth watched, List<Budget> budgets) {
     Budget matchedBudget = null;
     for (Budget each : budgets) {
-      if (each.matchYearMonth(watched)) {
+      if (each.isWantedBudget(watched)) {
         matchedBudget = each;
         break;
       }
