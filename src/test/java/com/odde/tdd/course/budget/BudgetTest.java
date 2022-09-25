@@ -95,7 +95,7 @@ public class BudgetTest {
     LocalDate endDate = LocalDate.of(2022, 12, 24);
 
     Budget augBudget = new Budget(YearMonth.of(2022, 8), 199);
-    Budget sepBudget = new Budget(YearMonth.of(2022, 9), 621);
+    Budget sepBudget = new Budget(YearMonth.of(2022, 9), 5);
     Budget octBudget = new Budget(YearMonth.of(2022, 10), 491);
     Budget novBudget = new Budget(YearMonth.of(2022, 11), 821);
     Budget decBudget = new Budget(YearMonth.of(2022, 12), 992);
@@ -105,7 +105,8 @@ public class BudgetTest {
     long result = getTotalBudget(beginDate, endDate, budgets);
 
     // Assert
-    Assertions.assertEquals(621 / 30 * (30 - 7 + 1) + 491 + 821 + 992 / 31 * 24, result);
+    Assertions.assertEquals(
+        (long) (((double) 5 / 30) * (30 - 7 + 1)) + 491 + 821 + 992 / 31 * 24, result);
   }
 
   @Test

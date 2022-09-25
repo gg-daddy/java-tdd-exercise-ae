@@ -42,10 +42,10 @@ public class BudgetQuery {
           continue;
         } else if (current.matchYearMonth(beginYearMonth)) {
           int countedDays = beginYearMonth.lengthOfMonth() - begin.getDayOfMonth() + 1;
-          result += current.getPerDayAmount() * countedDays;
+          result += current.getPortedAmount(countedDays);
         } else if (current.matchYearMonth(endYearMonth)) {
           int countedDays = end.getDayOfMonth();
-          result += current.getPerDayAmount() * countedDays;
+          result += current.getPortedAmount(countedDays);
         } else {
           result += current.getAmount();
         }

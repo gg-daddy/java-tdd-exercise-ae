@@ -20,11 +20,11 @@ public class Budget {
   }
 
   public long getPortedAmount(long days) {
-    return getPerDayAmount() * days;
+    return Double.valueOf(getPerDayAmount() * days).longValue();
   }
 
-  public long getPerDayAmount() {
-    return amount / month.lengthOfMonth();
+  private double getPerDayAmount() {
+    return (double) amount / month.lengthOfMonth();
   }
 
   public boolean matchYearMonth(YearMonth wanted) {
