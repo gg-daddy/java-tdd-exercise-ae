@@ -17,6 +17,10 @@ public class BudgetQuery {
   }
 
   public long query(LocalDate begin, LocalDate end) {
+    if (begin == null || end == null) {
+      throw new IllegalArgumentException("beginDate or endDate can't be null!");
+    }
+
     if (begin.isAfter(end)) {
       return NO_BUDGET_RESULT;
     }
