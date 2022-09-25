@@ -35,7 +35,7 @@ public class BudgetQuery {
     if (beginYearMonth.equals(endYearMonth)) {
       Budget matchedBudget = getWantedBudget(beginYearMonth, allBudgets);
       if (matchedBudget != null) {
-        return matchedBudget.getPartialAmount(daysBetween(begin, end));
+        return matchedBudget.getPartialAmount(countedDaysForBudget(begin, end));
       } else {
         return NO_BUDGET_RESULT;
       }
@@ -59,7 +59,7 @@ public class BudgetQuery {
     }
   }
 
-  private long daysBetween(LocalDate begin, LocalDate end) {
+  private long countedDaysForBudget(LocalDate begin, LocalDate end) {
     return begin.until(end, ChronoUnit.DAYS) + 1;
   }
 
