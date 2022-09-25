@@ -33,32 +33,21 @@ public class BudgetQuery {
     YearMonth beginYearMonth = YearMonth.from(begin);
     YearMonth endYearMonth = YearMonth.from(end);
     if (beginYearMonth.equals(endYearMonth)) {
-      Budget matchedBudget = getWantedBudget(beginYearMonth, allBudgets);
+      Budget matchedBudget = getWantedBudget(begin, allBudgets);
       if (matchedBudget != null) {
         return matchedBudget.getPartialAmount(countedDaysForBudget(begin, end));
       } else {
         return NO_BUDGET_RESULT;
       }
     } else {
-      long result = 0L;
-      for (Budget current : allBudgets) {
-        if (isValidBudgetForPeriod(current, beginYearMonth, endYearMonth)) {
-          continue;
-        } else if (current.isWantedBudget(beginYearMonth)) {
-          int countedDays = beginYearMonth.lengthOfMonth() - begin.getDayOfMonth() + 1;
-          result += current.getPartialAmount(countedDays);
-        } else if (current.isWantedBudget(endYearMonth)) {
-          int countedDays = end.getDayOfMonth();
-          result += current.getPartialAmount(countedDays);
-        } else {
-          result += current.getAmount();
-        }
-      }
-      return result;
+      return allBudgets.stream()
+          .filter(budget -> !isInvalidBudgetForPeriod(budget, beginYearMonth, endYearMonth))
+          .mapToLong(budget -> budget.getBudgetCountedAmount(begin, end))
+          .sum();
     }
   }
 
-  private boolean isValidBudgetForPeriod(
+  private boolean isInvalidBudgetForPeriod(
       Budget budget, YearMonth beginYearMonth, YearMonth endYearMonth) {
     return budget == null
         || budget.getMonth().isBefore(beginYearMonth)
@@ -69,7 +58,10 @@ public class BudgetQuery {
     return begin.until(end, ChronoUnit.DAYS) + 1;
   }
 
-  private Budget getWantedBudget(YearMonth watched, List<Budget> budgets) {
-    return budgets.stream().filter(budget -> budget.isWantedBudget(watched)).findAny().orElse(null);
+  private Budget getWantedBudget(LocalDate date, List<Budget> budgets) {
+    return budgets.stream()
+        .filter(budget -> budget.belongToCurrentBudget(date))
+        .findAny()
+        .orElse(null);
   }
 }
