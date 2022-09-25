@@ -42,7 +42,7 @@ public class BudgetQuery {
     } else {
       return allBudgets.stream()
           .filter(budget -> !isInvalidBudgetForPeriod(budget, beginYearMonth, endYearMonth))
-          .mapToLong(budget -> budget.getBudgetCountedAmount(begin, end))
+          .mapToLong(budget -> budget.getCountedAmount(begin, end))
           .sum();
     }
   }

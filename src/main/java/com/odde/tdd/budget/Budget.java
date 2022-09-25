@@ -24,7 +24,7 @@ public class Budget {
     return Double.valueOf(getPerDayAmount() * days).longValue();
   }
 
-  public long getBudgetCountedAmount(LocalDate begin, LocalDate end) {
+  public long getCountedAmount(LocalDate begin, LocalDate end) {
     if (belongToCurrentBudget(begin)) {
       int countedDays = begin.lengthOfMonth() - begin.getDayOfMonth() + 1;
       return getPartialAmount(countedDays);
