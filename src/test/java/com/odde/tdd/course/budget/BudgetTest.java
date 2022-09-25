@@ -3,6 +3,7 @@ package com.odde.tdd.course.budget;
 import com.odde.tdd.budget.Budget;
 import com.odde.tdd.budget.BudgetQuery;
 import com.odde.tdd.budget.BudgetRepo;
+import com.odde.tdd.budget.Period;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +22,9 @@ public class BudgetTest {
     // Arrange
     LocalDate beginDate = LocalDate.of(2022, 9, 24);
     LocalDate endDate = LocalDate.of(2022, 9, 23);
-
     // Act
-    long result = getTotalBudget(beginDate, endDate, null);
-
-    // Assert
-    Assertions.assertEquals(0L, result);
+    Assertions.assertThrows(
+        IllegalArgumentException.class, () -> getTotalBudget(beginDate, endDate, null));
   }
 
   @Test
@@ -150,6 +148,6 @@ public class BudgetTest {
   private long getTotalBudget(LocalDate begin, LocalDate end, List<Budget> budgets) {
     BudgetRepo repo = mock(BudgetRepo.class);
     when(repo.findAll()).thenReturn(budgets);
-    return new BudgetQuery(repo).query(begin, end);
+    return new BudgetQuery(repo).query(new Period(begin, end));
   }
 }
