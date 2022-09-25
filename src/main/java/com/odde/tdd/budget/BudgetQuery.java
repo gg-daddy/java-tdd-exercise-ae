@@ -9,6 +9,7 @@ import java.util.List;
 
 public class BudgetQuery {
 
+  private static final long NO_BUDGET_RESULT = 0L;
   private BudgetRepo repo;
 
   public BudgetQuery(BudgetRepo repo) {
@@ -17,12 +18,12 @@ public class BudgetQuery {
 
   public long query(LocalDate begin, LocalDate end) {
     if (begin.isAfter(end)) {
-      return 0L;
+      return NO_BUDGET_RESULT;
     }
 
     List<Budget> allBudgets = repo.findAll();
     if (CollectionUtils.isEmpty(allBudgets)) {
-      return 0L;
+      return NO_BUDGET_RESULT;
     }
 
     YearMonth beginYearMonth = YearMonth.from(begin);
@@ -32,7 +33,7 @@ public class BudgetQuery {
       if (matchedBudget != null) {
         return matchedBudget.getPortedAmount(daysBetween(begin, end));
       } else {
-        return 0L;
+        return NO_BUDGET_RESULT;
       }
     } else {
       long result = 0L;
