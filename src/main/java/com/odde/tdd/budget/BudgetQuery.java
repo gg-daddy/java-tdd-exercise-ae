@@ -64,13 +64,6 @@ public class BudgetQuery {
   }
 
   private Budget getWantedBudget(YearMonth watched, List<Budget> budgets) {
-    Budget matchedBudget = null;
-    for (Budget each : budgets) {
-      if (each.isWantedBudget(watched)) {
-        matchedBudget = each;
-        break;
-      }
-    }
-    return matchedBudget;
+    return budgets.stream().filter(budget -> budget.isWantedBudget(watched)).findAny().orElse(null);
   }
 }
