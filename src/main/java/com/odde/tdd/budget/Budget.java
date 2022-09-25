@@ -19,7 +19,7 @@ public class Budget {
     return amount;
   }
 
-  public long getPortedAmount(long days) {
+  public long getPartialAmount(long days) {
     return Double.valueOf(getPerDayAmount() * days).longValue();
   }
 
